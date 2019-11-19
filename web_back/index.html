@@ -44,7 +44,7 @@
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
             <img src="images/2.jpg" alt="person">
-            <a href="#"><i class="iconfont icon-tuichu"></i> 退出</a>
+            <a href="javascript:; " id="btnLogout"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
@@ -52,8 +52,9 @@
         <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
     </div>
 
+  <script src="js/jquery-1.12.4.min.js"></script>
 
-
+    <!-- 前任写的代码 -->
     <script>
         var $level01 = $('.level01');
         var $subli = $('.level02 li')
@@ -103,6 +104,62 @@
         }
 
     </script>
+
+    <!-- 二任写的代码 -->
+  
+    <script>
+        var user ={
+            logout:function(){
+
+                     $.post('http://localhost:8000/admin/logout',function(res){
+
+                    console.log(res);
+                    // 回去登录页
+                    if(res.code===200){
+                        location.href='login.html'
+                    }
+                    
+
+                })
+
+            }
+        }
+    
+    
+    </script>
+
+
+    <script>
+            $('#btnLogout').click(function(){
+                // 在退出之前，询问是否要退出
+                if(window.confirm('真的不爱我了吗') === false){
+                    return;
+                }
+
+
+
+                user.logout()
+                // 调用接口
+                // $.post('http://localhost:8000/admin/logout',function(res){
+
+                //     console.log(res);
+                //     // 回去登录页
+                //     if(res.code===200){
+                //         location.href='login.html'
+                //     }
+                    
+
+                // })
+
+
+
+            })
+        
+    </script>
+
+
+
+
 
 </body>
 </html>

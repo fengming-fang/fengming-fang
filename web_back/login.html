@@ -10,11 +10,11 @@
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
- 
+
 </head>
 
 <body>
-   
+
     <div class="main_wrap">
 
         <div class="header">
@@ -37,31 +37,61 @@
 
 
     <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
 
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">友情提示</h4>
-                    </div>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">友情提示</h4>
+                </div>
 
-                    <div class="modal-body">
-                        <p id="myInfo"> </p>
-                    </div>
+                <div class="modal-body">
+                    <p id="myInfo"> </p>
+                </div>
 
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
 </body>
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    // 用户模块
+    // 把所有用户相关的操作都放在这个对象里边
+    
+    var user = {
+        login: function (userName, userPassword) {
+            console.log('随便写的', userName, userPassword)
+            $.post('http://localhost:8000/admin/login',
+                {
+                    user_name: userName,
+                    password: userPassword
+                },
+
+                function (res) {
+                    // console.log(res);
+                    if (res.code === 200) {
+                        // alert('登陆成功')
+                        location.href = 'index.html'
+                        // location.assign('index.html') 同上一样的效果，可以后退
+                    } else {
+                        // alert(res.msg)
+                        $('#myInfo').text(res.msg)
+                        $('#myModal').modal('show')
+                    }
+                })
+
+        }
+
+    }
+</script>
 <script>
     // 实现管理员登陆功能
     $('#btnLogin').click(function () {
@@ -71,7 +101,6 @@
 
         var myName = $('#myName').val().trim();
         var myPassword = $('#myPassword').val().trim();
-
         // console.log(myName, myPassword);
 
         if (myName === '' || myPassword === '') {
@@ -81,28 +110,27 @@
             // return
         }
 
-        $.post('http://localhost:8000/admin/login',
-            {
-                user_name: myName,
-                password: myPassword
-            },
 
+        user.login(myName, myPassword)
 
-        function (res) {
-                console.log(res);
+        // $.post('http://localhost:8000/admin/login',
+        //     {
+        //         user_name: myName,
+        //         password: myPassword
+        //     },
 
-                if (res.code === 200) {
-                    // alert('登陆成功')
-                    location.href='index.html'
-                    // location.assign('index.html') 同上一样的效果，可以后退
-
-                } else {
-                    // alert(res.msg)
-                    $('#myInfo').text(res.msg)
-                    $('#myModal').modal('show') 
-                }
-
-        })
+        // function (res) {
+        //         // console.log(res);
+        //         if (res.code === 200) {
+        //             // alert('登陆成功')
+        //             location.href='index.html'
+        //             // location.assign('index.html') 同上一样的效果，可以后退
+        //         } else {
+        //             // alert(res.msg)
+        //             $('#myInfo').text(res.msg)
+        //             $('#myModal').modal('show') 
+        //         }
+        // })
 
     })
 
