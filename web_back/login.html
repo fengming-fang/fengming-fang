@@ -62,10 +62,14 @@
 
 <script src="js/jquery-1.12.4.min.js"></script>
 <script src="js/bootstrap/js/bootstrap.min.js"></script>
-<script>
+
+
+
+<!-- 第二次初具模块化 -->
+<!-- <script>
     // 用户模块
     // 把所有用户相关的操作都放在这个对象里边
-    
+
     var user = {
         login: function (userName, userPassword) {
             console.log('随便写的', userName, userPassword)
@@ -91,7 +95,13 @@
         }
 
     }
-</script>
+</script> -->
+
+
+<!-- 第三次  正式模块化引入 -->
+<script src="js/utils/user.js"></script>
+
+<!-- 第一次代码书写 -->
 <script>
     // 实现管理员登陆功能
     $('#btnLogin').click(function () {
@@ -110,8 +120,21 @@
             // return
         }
 
-
-        user.login(myName, myPassword)
+        // 第四次 代码优化 ，提炼用户模块    start
+        user.login(myName, myPassword, function (res) {
+            // console.log(res);
+            if (res.code === 200) {
+                // alert('登陆成功')
+                location.href = 'index.html'
+                // location.assign('index.html') 同上一样的效果，可以后退
+            } else {
+                // alert(res.msg)
+                $('#myInfo').text(res.msg)
+                $('#myModal').modal('show')
+            }
+        })
+        // 第四次    end
+ 
 
         // $.post('http://localhost:8000/admin/login',
         //     {
@@ -137,5 +160,6 @@
 
 
 </script>
+
 
 </html>
